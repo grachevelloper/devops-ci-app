@@ -70,7 +70,7 @@ jobs:
             docker rm -f smoke >/dev/null 2>&1 || true
           }
           trap cleanup EXIT
-          docker run -d --name smoke -p 127.0.0.1:5001:5000 "devops-ci-app:${GITHUB_SHA}"
+          docker run -d --name smoke -p 127.0.0.1:5000:5000 "devops-ci-app:${GITHUB_SHA}"
           ready=0
           for attempt in {1..15}; do
             if curl --fail --silent --show-error --max-time 2 \
@@ -89,7 +89,7 @@ jobs:
           import json
           from pathlib import Path
           payload = json.loads(Path("health.json").read_text(encoding="utf-8"))
-          assert payload == {"status": "broken"}, f"unexpected /health payload: {payload}"
+          assert payload == {"status": "ok"}, f"unexpected /health payload: {payload}"
           PY
           docker exec smoke id
       - name: Log in to GHCR
